@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-ecom
+
+    environment:
+      MYSQL_ROOT_PASSWORD: Samit@22
+      MYSQL_DATABASE: ecom_db
+
+    ports:
+      - "3307:3306"
+
+    networks:
+      - ecom-network
+
+  ecom-app:
+    image: samitnole/ecom-application
+    container_name: ecom-app
+
+    depends_on:
+      - mysql
+
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/ecom_db
+      DB_USERNAME: root
+      DB_PASSWORD: Samit@22
+
+    ports:
+      - "8080:8080"
+
+    networks:
+      - ecom-network
+
+networks:
+  ecom-network:
+    driver: bridge
